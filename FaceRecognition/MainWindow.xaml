@@ -28,6 +28,7 @@
                     </Grid.RowDefinitions>
                     <Button Grid.Column="0" Grid.Row="0" Content="Сделать снимок" Margin="10,10,10,10" Name="buttonSnapshot" Click="buttonSnapshot_Click"/>
                     <Button Grid.Column="0" Grid.Row="1" Content="Загрузить из файла" Margin="10,10,10,10" Name="uploadFromFile" Click="uploadFromFile_Click"/>
+                    <Button Grid.Column="1" Grid.Row="2" Content="Добавить пользователя" Margin="10,10,10,10" Name="faceDetection" Click="faceDetection_Click"/>
                     <ScrollViewer Grid.ColumnSpan="2" Grid.Row="3" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                         <StackPanel Name="listImage" Orientation="Horizontal"/>
                     </ScrollViewer>

@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -19,7 +20,10 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using System.Runtime.InteropServices;
 using System.Windows.Threading;
-using Microsoft.Win32;
+using Label = System.Windows.Controls.Label;
+using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
+using Orientation = System.Windows.Controls.Orientation;
+using FaceRecognition.FaceDetection;
 
 namespace FaceRecognition
 {
@@ -77,7 +81,15 @@ namespace FaceRecognition
             }
             else
             {
-                capture = new Capture();
+                try
+                {
+                    capture = new Capture();
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.Forms.MessageBox.Show(ex.Message, "Error", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
                 buttonStart.Content = "Стоп";
                 cameraIsActivated = true;
                 dispatcherTimer.Start();
@@ -92,16 +104,29 @@ namespace FaceRecognition
 
         private void buttonSnapshot_Click(object sender, RoutedEventArgs e)
         {
-            AddImage(cameraImage.Source);
+            if (cameraImage.Source != null)
+            {
+                AddImage(cameraImage.Source);
+            }
         }
 
         private void uploadFromFile_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Multiselect = false;
-            ofd.Filter = "*.bmp, *.jpg, *.jpeg|*.bmp, *.jpg, *.jpeg";
+            ofd.Filter = "(*.bmp, *.jpg, *.jpeg)|*.bmp; *.jpg; *.jpeg";
             ofd.ShowDialog();
-            
+
+            BitmapImage imageSource = new BitmapImage();
+            if (ofd.FileName != String.Empty)
+            {
+                imageSource.BeginInit();
+                imageSource.UriSource = new Uri(ofd.FileName, UriKind.Relative);
+                imageSource.CacheOption = BitmapCacheOption.OnLoad;
+                imageSource.EndInit();
+
+                AddImage(imageSource);
+            }
         }
 
         private void AddImage(ImageSource bitmapSource)
@@ -127,6 +152,16 @@ namespace FaceRecognition
         {
             Label label = (Label) sender;
             listImage.Children.Remove((StackPanel)label.Parent);
+        }
+
+        private void faceDetection_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var child in listImage.Children)
+            {
+                ImageSource imagrSource = ((Image)((StackPanel) child).Children[1]).Source;
+                FaceDetectionBase fd = new FaceDetectionHaarCascade(imagrSource);
+                fd.DetectionFace();
+            }
         }
     }
 }
