@@ -19,6 +19,7 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using System.Runtime.InteropServices;
 using System.Windows.Threading;
+using Microsoft.Win32;
 
 namespace FaceRecognition
 {
@@ -32,13 +33,14 @@ namespace FaceRecognition
             InitializeComponent();
         }
 
-        private Capture capture = new Capture();
-        private DispatcherTimer timer = new DispatcherTimer();
+        private Capture capture;
+        private DispatcherTimer dispatcherTimer = new DispatcherTimer();
+        private bool cameraIsActivated = false;
 
-        private void GetVideo(object sender, EventArgs e)
+        private void dispatcherTimer_Tick(object sender, EventArgs e)
         {
-            Image<Bgr, Byte> Kadr = capture.QueryFrame();
-            CameraImage.Source = ToBitmapSource(Kadr);
+            Image<Bgr, Byte> kadr = capture.QueryFrame();
+            cameraImage.Source = ToBitmapSource(kadr);
         }
 
         [DllImport("gdi32")]
@@ -61,16 +63,70 @@ namespace FaceRecognition
             }
         }
 
-        private void ButtonStart_OnClickuttonStart_Click(object sender, RoutedEventArgs e)
+        private void ButtonStart_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            if (cameraIsActivated)
+            {
+                dispatcherTimer.Stop();
+                if (capture != null)
+                {
+                    capture.Dispose();
+                }
+                buttonStart.Content = "Старт";
+                cameraIsActivated = false;
+            }
+            else
+            {
+                capture = new Capture();
+                buttonStart.Content = "Стоп";
+                cameraIsActivated = true;
+                dispatcherTimer.Start();
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            timer.Interval = new TimeSpan(0, 0, 0, 1000 / 60);
-            timer.Tick += GetVideo;
-            timer.Start();
+            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 1000/60);
+        }
+
+        private void buttonSnapshot_Click(object sender, RoutedEventArgs e)
+        {
+            AddImage(cameraImage.Source);
+        }
+
+        private void uploadFromFile_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Multiselect = false;
+            ofd.Filter = "*.bmp, *.jpg, *.jpeg|*.bmp, *.jpg, *.jpeg";
+            ofd.ShowDialog();
+            
+        }
+
+        private void AddImage(ImageSource bitmapSource)
+        {
+            StackPanel imagePanel = new StackPanel();
+            imagePanel.Orientation = Orientation.Vertical;
+
+            Image image = new Image();
+            image.Source = bitmapSource;
+            image.Height = 300;
+
+            Label label = new Label();
+            label.Content = "Удалить";
+            label.MouseLeftButtonDown += RemoveImage;
+
+            imagePanel.Children.Add(label);
+            imagePanel.Children.Add(image);
+            imagePanel.Margin = new Thickness(10, 0, 10, 0);
+            listImage.Children.Add(imagePanel);
+        }
+
+        private void RemoveImage(object sender, RoutedEventArgs e)
+        {
+            Label label = (Label) sender;
+            listImage.Children.Remove((StackPanel)label.Parent);
         }
     }
 }

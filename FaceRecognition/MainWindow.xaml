@@ -15,11 +15,28 @@
                 <Grid Background="#FFE5E5E5"/>
             </TabItem>
             <TabItem Header="Новый пользователь">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.3*" />
+                        <ColumnDefinition Width="0.7*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="350" MinHeight="350" MaxHeight="350"/>
+                    </Grid.RowDefinitions>
+                    <Button Grid.Column="0" Grid.Row="0" Content="Сделать снимок" Margin="10,10,10,10" Name="buttonSnapshot" Click="buttonSnapshot_Click"/>
+                    <Button Grid.Column="0" Grid.Row="1" Content="Загрузить из файла" Margin="10,10,10,10" Name="uploadFromFile" Click="uploadFromFile_Click"/>
+                    <ScrollViewer Grid.ColumnSpan="2" Grid.Row="3" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                        <StackPanel Name="listImage" Orientation="Horizontal"/>
+                    </ScrollViewer>
+                </Grid>
             </TabItem>
         </TabControl>
-        <Image Name="CameraImage" Grid.Column="0"/>
-        <Button Grid.Column="0" Content="Стоп" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Name="ButtonStart" Click="ButtonStart_OnClickuttonStart_Click"/>
+
+        <Image Name="cameraImage" Grid.Column="0" HorizontalAlignment="Left" Margin="10,50,10,10"/>
+        <Button Grid.Column="0" Content="Старт" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Name="buttonStart" Click="ButtonStart_Click"/>
 
     </Grid>
 </Window>

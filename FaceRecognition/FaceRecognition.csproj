@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DirectShowLib-2005">
+      <HintPath>..\..\..\загрузки\CameraCapture_\CameraCapture V2.0\Lib\DirectShowLib-2005.dll</HintPath>
+    </Reference>
     <Reference Include="Emgu.CV">
       <HintPath>C:\Emgu\emgucv-windows-universal-cuda 2.9.0.1922\bin\Emgu.CV.dll</HintPath>
     </Reference>
