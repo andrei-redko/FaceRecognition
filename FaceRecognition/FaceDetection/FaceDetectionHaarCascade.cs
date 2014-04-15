@@ -20,10 +20,7 @@ namespace FaceRecognition.FaceDetection
 
         public override void DetectionFace()
         {
-            String fileName = String.Concat(DateTime.Now.Millisecond.ToString(), 
-                DateTime.Now.Second.ToString());
-            SaveImageSourceToFile("Original/", fileName,
-                ImageFace);
+            SaveImageSourceToFile("Original/", ImageFace);
             Image<Bgr, Byte> currentFrame = new Image<Bgr, byte>(image);
 
             if (currentFrame != null)
@@ -43,7 +40,7 @@ namespace FaceRecognition.FaceDetection
                     Rectangle faceRect = new Rectangle();
                     faceSize.TryGetValue(faceSize.Max(x => x.Key), out faceRect);
                     Bitmap faceBitmap = image.Clone(faceRect, image.PixelFormat);
-                    faceBitmap.Save(String.Concat("DetectionFace/", fileName,".jpeg"), ImageFormat.Jpeg);
+                    faceBitmap.Save(String.Concat("DetectionFace/", fileName), ImageFormat.Jpeg);
                 }
             }
         }
