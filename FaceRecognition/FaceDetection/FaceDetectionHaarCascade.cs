@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Drawing.Imaging;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using System;
@@ -19,6 +20,10 @@ namespace FaceRecognition.FaceDetection
 
         public override void DetectionFace()
         {
+            String fileName = String.Concat(DateTime.Now.Millisecond.ToString(), 
+                DateTime.Now.Second.ToString());
+            SaveImageSourceToFile("Original/", fileName,
+                ImageFace);
             Image<Bgr, Byte> currentFrame = new Image<Bgr, byte>(image);
 
             if (currentFrame != null)
@@ -28,11 +33,18 @@ namespace FaceRecognition.FaceDetection
                     new HaarCascade(@"haarcascade_frontalface_default.xml");
                 var detectedFaces = grayFrame.DetectHaarCascade(haarCascade)[0];
 
+                Dictionary<int, Rectangle> faceSize = new Dictionary<int, Rectangle>();
                 foreach (var face in detectedFaces)
-                    currentFrame.Draw(face.rect, new Bgr(0, double.MaxValue, 0), 3);
-
-                SaveImageSourceToFile("DetectionFace/", 
-                    MainWindow.ToBitmapSource(currentFrame));
+                {
+                    faceSize.Add(face.rect.Height*face.rect.Width, face.rect);
+                }
+                if (faceSize != null)
+                {
+                    Rectangle faceRect = new Rectangle();
+                    faceSize.TryGetValue(faceSize.Max(x => x.Key), out faceRect);
+                    Bitmap faceBitmap = image.Clone(faceRect, image.PixelFormat);
+                    faceBitmap.Save(String.Concat("DetectionFace/", fileName,".jpeg"), ImageFormat.Jpeg);
+                }
             }
         }
     }

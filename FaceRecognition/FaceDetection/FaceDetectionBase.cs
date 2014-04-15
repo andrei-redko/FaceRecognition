@@ -15,7 +15,7 @@ namespace FaceRecognition.FaceDetection
 {
     public class FaceDetectionBase
     {
-        public ImageSource ImageFace { get; private set; }
+        protected ImageSource ImageFace { get; set; }
 
         protected Bitmap image = null;
 
@@ -25,17 +25,14 @@ namespace FaceRecognition.FaceDetection
             image = GetBitmap((BitmapSource)imageSource);
         }
 
-        protected void SaveImageSourceToFile(string filePath, ImageSource imageFace)
+        protected void SaveImageSourceToFile(string filePath, string fileName, 
+            ImageSource imageFace)
         {
-            DateTime cd = DateTime.Now;
-            string fileName = String.Concat(cd.Hour.ToString(), 
-                cd.Millisecond.ToString(), ".jpeg");
-
-            using (var fileStream = new FileStream(String.Concat(filePath, fileName), 
-                FileMode.Create))
+            using (var fileStream = new FileStream(String.Concat(filePath,
+                String.Concat(fileName, ".jpeg")), FileMode.Create))
             {
                 BitmapEncoder encoder = new PngBitmapEncoder();
-                encoder.Frames.Add(BitmapFrame.Create((BitmapSource)imageFace));
+                encoder.Frames.Add(BitmapFrame.Create((BitmapSource) imageFace));
                 encoder.Save(fileStream);
             }
         }
@@ -61,7 +58,8 @@ namespace FaceRecognition.FaceDetection
 
         public virtual void DetectionFace()
         {
-            SaveImageSourceToFile("DetectionFace/", ImageFace);
+            SaveImageSourceToFile("DetectionFace/", DateTime.Now.ToLongTimeString(), 
+                ImageFace);
         }
     }
 }
