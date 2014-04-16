@@ -159,8 +159,8 @@ namespace FaceRecognition
             foreach (var child in listImage.Children)
             {
                 ImageSource imagrSource = ((Image)((StackPanel) child).Children[1]).Source;
-                FaceDetectionBase fd = new FaceDetectionHaarCascade(imagrSource);
-                fd.DetectionFace();
+                FaceDetectionBase fd = new FaceDetectionColor(imagrSource);
+                //fd.DetectionFace();
             }
         }
     }

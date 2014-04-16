@@ -40,7 +40,7 @@ namespace FaceRecognition.FaceDetection
                     Rectangle faceRect = new Rectangle();
                     faceSize.TryGetValue(faceSize.Max(x => x.Key), out faceRect);
                     Bitmap faceBitmap = image.Clone(faceRect, image.PixelFormat);
-                    faceBitmap.Save(String.Concat("DetectionFace/", fileName), ImageFormat.Jpeg);
+                    faceBitmap.Save(String.Concat("DetectionFace/", FileName), ImageFormat.Jpeg);
                 }
             }
         }

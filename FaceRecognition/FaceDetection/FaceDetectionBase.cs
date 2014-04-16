@@ -19,20 +19,21 @@ namespace FaceRecognition.FaceDetection
 
         protected Bitmap image = null;
 
-        protected String fileName = String.Concat(DateTime.Now.Millisecond.ToString(),
-            DateTime.Now.Second.ToString(), ".jpeg");
+        public String FileName { get; private set; }
 
         public FaceDetectionBase(ImageSource imageSource)
         {
             ImageFace = imageSource;
             image = GetBitmap((BitmapSource)imageSource);
+            FileName = String.Concat(DateTime.Now.Millisecond.ToString(),
+                DateTime.Now.Second.ToString(), ".jpeg");
         }
 
         protected void SaveImageSourceToFile(string filePath, 
             ImageSource imageFace)
         {
             using (var fileStream = new FileStream(String.Concat(filePath,
-                fileName), FileMode.Create))
+                FileName), FileMode.Create))
             {
                 BitmapEncoder encoder = new PngBitmapEncoder();
                 encoder.Frames.Add(BitmapFrame.Create((BitmapSource) imageFace));
