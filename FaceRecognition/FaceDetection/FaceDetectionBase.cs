@@ -64,5 +64,10 @@ namespace FaceRecognition.FaceDetection
         {
             SaveImageSourceToFile("DetectionFace/", ImageFace);
         }
+
+        public virtual Bitmap DetectionFaceGetBitmap()
+        {
+            return GetBitmap((BitmapSource)ImageFace);
+        }
     }
 }

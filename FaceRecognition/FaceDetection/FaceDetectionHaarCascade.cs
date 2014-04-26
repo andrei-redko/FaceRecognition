@@ -13,7 +13,7 @@ namespace FaceRecognition.FaceDetection
 {
     public class FaceDetectionHaarCascade : FaceDetectionBase
     {
-        public FaceDetectionHaarCascade(ImageSource imageSource) : 
+        public FaceDetectionHaarCascade(ImageSource imageSource) :
             base(imageSource)
         {
         }
@@ -43,6 +43,34 @@ namespace FaceRecognition.FaceDetection
                     faceBitmap.Save(String.Concat("DetectionFace/", FileName), ImageFormat.Jpeg);
                 }
             }
+        }
+
+        public override Bitmap DetectionFaceGetBitmap()
+        {
+            SaveImageSourceToFile("Original/", ImageFace);
+            Image<Bgr, Byte> currentFrame = new Image<Bgr, byte>(image);
+
+            if (currentFrame != null)
+            {
+                Image<Gray, Byte> grayFrame = currentFrame.Convert<Gray, Byte>();
+                HaarCascade haarCascade =
+                    new HaarCascade(@"haarcascade_frontalface_default.xml");
+                var detectedFaces = grayFrame.DetectHaarCascade(haarCascade)[0];
+
+                Dictionary<int, Rectangle> faceSize = new Dictionary<int, Rectangle>();
+                foreach (var face in detectedFaces)
+                {
+                    faceSize.Add(face.rect.Height*face.rect.Width, face.rect);
+                }
+                if (faceSize != null)
+                {
+                    Rectangle faceRect = new Rectangle();
+                    faceSize.TryGetValue(faceSize.Max(x => x.Key), out faceRect);
+                    Bitmap faceBitmap = image.Clone(faceRect, image.PixelFormat);
+                    return faceBitmap;
+                }
+            }
+            return (Bitmap) null;
         }
     }
 }

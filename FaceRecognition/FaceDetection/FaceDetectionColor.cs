@@ -16,6 +16,8 @@ namespace FaceRecognition.FaceDetection
         private double[] medianRed, medianGreen, medianBlue;
         private double[] stdRed, stdGreen, stdBlue;
         private bool[,] mask;
+        private double medianR, medianG, medianB;
+        private double stdR, stdG, stdB;
 
         public FaceDetectionColor(ImageSource imageSource) :
             base(imageSource)
@@ -41,6 +43,12 @@ namespace FaceRecognition.FaceDetection
                 stdGreen[i] = STDRow(green.GetRow(i));
                 stdBlue[i] = STDRow(blue.GetRow(i));
             }
+            medianR = MedianRow(medianRed, h);
+            medianG = MedianRow(medianGreen, h);
+            medianB = MedianRow(medianBlue, h);
+            stdR = STDRow(stdRed);
+            stdG = STDRow(stdGreen);
+            stdB = STDRow(stdBlue);
             mask = new bool[w, h];
             SkinColorMask();
             SkinColorBitmap();
@@ -74,6 +82,20 @@ namespace FaceRecognition.FaceDetection
             return median;
         }
 
+        private double MedianRow(double[] array, int height)
+        {
+            double median = 0;
+            if (height % 2 == 0)
+            {
+                median = (array[height / 2 - 1] + array[height / 2 + 1]) / 2;
+            }
+            else
+            {
+                median = array[(int)Math.Floor((double)height / 2)];
+            }
+            return median;
+        }
+
         private double STDRow(int[] array)
         {
             double average = array.Average();
@@ -82,18 +104,26 @@ namespace FaceRecognition.FaceDetection
             return Math.Sqrt(sumOfSquaresOfDifferences/array.Length);
         }
 
+        private double STDRow(double[] array)
+        {
+            double average = array.Average();
+            double sumOfSquaresOfDifferences = array.Select(
+                val => (val - average) * (val - average)).Sum();
+            return Math.Sqrt(sumOfSquaresOfDifferences / array.Length);
+        }
+
         private void SkinColorMask()
         {
             for (int i = 0; i < w; i++)
             {
                 for (int j = 0; j < h; j++)
                 {
-                    if (Math.Abs(red[i, j] - medianRed[j]) < stdRed[j] &&
-                        Math.Abs(blue[i, j] - medianBlue[j]) < stdBlue[j] &&
-                        Math.Abs(green[i, j] - medianGreen[j]) < stdGreen[j] )
+                    if (Math.Abs(red[i, j] - medianR) < stdR &&
+                        Math.Abs(blue[i, j] - medianB) < stdB &&
+                        Math.Abs(green[i, j] - medianG) < stdG )
                     {
                     //if (red[i, j] > 220 && blue[i, j] > 170 && green[i, j] > 210 &&
-                    //    Math.Abs(red[i, j] - green[i, j]) <= 15 && red[i, j] > green[i, j] && 
+                    //    Math.Abs(red[i, j] - green[i, j]) <= 15 && red[i, j] > green[i, j] &&
                     //    green[i, j] > blue[i, j])
                     //{
                     //if (red[i, j] > 95 && blue[i, j] > 20 && green[i, j] > 40 &&
