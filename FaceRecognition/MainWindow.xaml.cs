@@ -163,7 +163,7 @@ namespace FaceRecognition
             //    FaceDetectionBase fd = new FaceDetectionColor(imagrSource);
             //    //fd.DetectionFace();
             //}
-            FeatureExtractionBase ffff = new FeatureExtractionBase(@"d:\Code\FaceRecognition\FaceRecognition\bin\Debug\DetectionFace\1.jpg");
+            FeatureExtractionBase ffff = new FeatureExtractionBase(@"d:\Code\FaceRecognition\FaceRecognition\bin\Debug\DetectionFace\34ed3f48a57f8998c0e775ba65f.jpg");
         }
     }
 }

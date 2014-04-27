@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,12 +15,12 @@ namespace FaceRecognition.FeatureExtraction
         public Bitmap Face { get; set; }
 
         private int w, h;
-        private int[,] red, green, blue;
+        private byte[,] red, green, blue;
         private bool[,] mask;
         private int[,] labels;
 
         private Bitmap Grayscale;
-        private int[,] redGrayscale, greenGrayscale, blueGrayscale;
+        private byte[,] redGrayscale, greenGrayscale, blueGrayscale;
         private double[] WP, HP;
         private List<Point> points = new List<Point>();
 
@@ -38,18 +40,18 @@ namespace FaceRecognition.FeatureExtraction
         {
             w = Face.Width;
             h = Face.Height;
-            red = new int[w, h];
-            green = new int[w, h];
-            blue = new int[w, h];
+            red = new byte[w, h];
+            green = new byte[w, h];
+            blue = new byte[w, h];
             mask = new bool[w, h];
 
             RGBSetup(Face, red, blue, green);
             SkinColorMask();
+            SkinColorBitmap();
 
-
-            redGrayscale = new int[w, h];
-            greenGrayscale = new int[w, h];
-            blueGrayscale = new int[w, h];
+            redGrayscale = new byte[w, h];
+            greenGrayscale = new byte[w, h];
+            blueGrayscale = new byte[w, h];
 
             Grayscale = new Bitmap(w, h);
             GrayscaleSetup();
@@ -58,7 +60,8 @@ namespace FaceRecognition.FeatureExtraction
             RGBSetup(Grayscale, redGrayscale, blueGrayscale, greenGrayscale);
 
             labels = new int[w, h];
-            Labeling(mask, labels);
+            //Labeling(mask, labels);
+            SearchForObjects();
             SkinColorBitmap();
             WP = new double[w];
             HP = new double[h];
@@ -67,7 +70,7 @@ namespace FaceRecognition.FeatureExtraction
             PointOnTheFace();
         }
 
-        private void RGBSetup(Bitmap bitmap, int[,] red, int[,] blue, int[,] green)
+        private void RGBSetup(Bitmap bitmap, byte[,] red, byte[,] blue, byte[,] green)
         {
             for (int i = 0; i < w; i++)
             {
@@ -192,6 +195,115 @@ namespace FaceRecognition.FeatureExtraction
                     if (mask[j, i])
                     {
                         HP[i] += 0.3 * red[j, i] + 0.59 * green[j, i] + 0.11 * blue[j, i];
+                    }
+                }
+            }
+        }
+
+        public void SearchForObjects()
+        {
+            List<List<int>> aa = new List<List<int>>();
+            bool flag = false;
+            for (int i = 0; i < h-1; i++)
+            {
+                List<int> a = new List<int>();
+                for (int j = 0; j < w; j++)
+                {
+                    //if (mask[j, i] != mask[j, i + 1])
+                    //{
+                    //    a.Add(j);
+                    //    flag = false;
+                    //}
+                    if (!flag)
+                    {
+                        if (!mask[j, i] && mask[j, i + 1])
+                        {
+                            a.Add(j);
+                            flag = false;
+                        }
+                    }
+                    else
+                    {
+                        if (mask[j, i] && !mask[j, i + 1])
+                        {
+                            a.Add(j);
+                            flag = true;
+                        }
+                    }
+                        //labels[i, j] = !mask[i, j] ? 1 : 0;
+                }
+                aa.Add(a);
+            }
+            int yyyy = 0;
+            foreach (var y in aa)
+            {
+                if (y.Count()%2 == 1)
+                {
+                    y.RemoveAt(y.Count() - 1);
+                }
+                for (int i = 0; i < y.Count; i=i+1)
+                {
+                    int l = i;
+                    int r = i != (y.Count-1) ? i + 1 : i;
+                    for (int index = y[l]; index < y[r]; index++)
+                    {
+                        mask[index, yyyy] = true;
+                    }
+                }
+                yyyy++;
+            }
+
+            int kn = 0, km = 0;
+            int cur = 1;
+            int A, B, C;
+            for (int i = 0; i < w; i++)
+            {
+                for (int j = 0; j < h; j++)
+                {
+                    kn = j - 1;
+                    if (kn <= 0)
+                    {
+                        kn = 0;
+                        B = 0;
+                    }
+                    else
+                    {
+                        B = labels[i, kn];
+                    }
+                    km = i - 1;
+                    if (km <= 0)
+                    {
+                        km = 0;
+                        C = 0;
+                    }
+                    else
+                    {
+                        C = labels[km, j];
+                    }
+                    A = labels[i, j];
+                    if (A == 0)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        if (B == 0 && C == 0)
+                        {
+                            cur++;
+                            labels[i, j] = cur;
+                        }
+                        if (B != 0 && C == 0)
+                        {
+                            labels[i, j] = B;
+                        }
+                        if (B == 0 && C != 0)
+                        {
+                            labels[i, j] = C;
+                        }
+                        if (B != 0 && C != 0)
+                        {
+                            labels[i, j] = B;
+                        }
                     }
                 }
             }
