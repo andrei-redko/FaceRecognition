@@ -24,6 +24,7 @@ using Label = System.Windows.Controls.Label;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using Orientation = System.Windows.Controls.Orientation;
 using FaceRecognition.FaceDetection;
+using FaceRecognition.FeatureExtraction;
 
 namespace FaceRecognition
 {
@@ -156,12 +157,13 @@ namespace FaceRecognition
 
         private void faceDetection_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var child in listImage.Children)
-            {
-                ImageSource imagrSource = ((Image)((StackPanel) child).Children[1]).Source;
-                FaceDetectionBase fd = new FaceDetectionColor(imagrSource);
-                //fd.DetectionFace();
-            }
+            //foreach (var child in listImage.Children)
+            //{
+            //    ImageSource imagrSource = ((Image)((StackPanel) child).Children[1]).Source;
+            //    FaceDetectionBase fd = new FaceDetectionColor(imagrSource);
+            //    //fd.DetectionFace();
+            //}
+            FeatureExtractionBase ffff = new FeatureExtractionBase(@"d:\Code\FaceRecognition\FaceRecognition\bin\Debug\DetectionFace\1.jpg");
         }
     }
 }

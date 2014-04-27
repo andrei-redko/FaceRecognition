@@ -79,7 +79,8 @@
     <Compile Include="FaceDetection\FaceDetectionBase.cs" />
     <Compile Include="FaceDetection\FaceDetectionColor.cs" />
     <Compile Include="FaceDetection\FaceDetectionHaarCascade.cs" />
-    <Compile Include="FeatureExtraction\FeatureExtraction.cs" />
+    <Compile Include="FeatureExtraction\FeatureExtractionBase.cs" />
+    <Compile Include="FeatureExtraction\Point.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
