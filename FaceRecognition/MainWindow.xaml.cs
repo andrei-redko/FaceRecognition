@@ -61,7 +61,7 @@ namespace FaceRecognition
                     ptr,
                     IntPtr.Zero,
                     Int32Rect.Empty,
-                    System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
+                    BitmapSizeOptions.FromEmptyOptions());
 
                 DeleteObject(ptr);
                 return bs;
@@ -159,11 +159,11 @@ namespace FaceRecognition
         {
             //foreach (var child in listImage.Children)
             //{
-            //    ImageSource imagrSource = ((Image)((StackPanel) child).Children[1]).Source;
-            //    FaceDetectionBase fd = new FaceDetectionColor(imagrSource);
-            //    //fd.DetectionFace();
+            //    ImageSource imagrSource = ((Image)((StackPanel)child).Children[1]).Source;
+            //    FaceDetectionBase fd = new FaceDetectionHaarCascade(imagrSource);
+            //    fd.DetectionFace();
             //}
-            FeatureExtractionBase ffff = new FeatureExtractionBase(@"d:\Code\FaceRecognition\FaceRecognition\bin\Debug\DetectionFace\34ed3f48a57f8998c0e775ba65f.jpg");
+            FeatureExtractionBase ffff = new FeatureExtractionBase(@"d:\Code\FaceRecognition\FaceRecognition\bin\Debug\DetectionFace\1488791368.jpeg");
         }
     }
 }

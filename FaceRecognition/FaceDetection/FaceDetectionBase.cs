@@ -25,8 +25,7 @@ namespace FaceRecognition.FaceDetection
         {
             ImageFace = imageSource;
             image = GetBitmap((BitmapSource)imageSource);
-            FileName = String.Concat(DateTime.Now.Millisecond.ToString(),
-                DateTime.Now.Second.ToString(), ".jpeg");
+            FileName = String.Concat((new Random()).Next(Int32.MaxValue), ".jpeg");
         }
 
         protected void SaveImageSourceToFile(string filePath, 
