@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +26,8 @@ using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using Orientation = System.Windows.Controls.Orientation;
 using FaceRecognition.FaceDetection;
 using FaceRecognition.FeatureExtraction;
+using Image = System.Windows.Controls.Image;
+using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace FaceRecognition
 {
@@ -157,13 +160,38 @@ namespace FaceRecognition
 
         private void faceDetection_Click(object sender, RoutedEventArgs e)
         {
-            //foreach (var child in listImage.Children)
-            //{
-            //    ImageSource imagrSource = ((Image)((StackPanel)child).Children[1]).Source;
-            //    FaceDetectionBase fd = new FaceDetectionHaarCascade(imagrSource);
-            //    fd.DetectionFace();
-            //}
-            FeatureExtractionBase ffff = new FeatureExtractionBase(@"d:\Code\FaceRecognition\FaceRecognition\bin\Debug\DetectionFace\1488791368.jpeg");
+            if (listImage.Children.Count != 0)
+            {
+                foreach (var child in listImage.Children)
+                {
+                    ImageSource imagrSource = ((Image) ((StackPanel) child).Children[1]).Source;
+                    FaceDetectionBase fd = new FaceDetectionHaarCascade(imagrSource);
+                    Bitmap faceDetect = fd.DetectionFaceGetBitmap();
+                    if (faceDetect != null)
+                    {
+                        try
+                        {
+                            FeatureExtractionBase faceFeature = new FeatureExtractionBase(faceDetect);
+                            List<FeatureExtraction.Point> aaaaa = faceFeature.SearchPoint();
+                        }
+                        catch (Exception)
+                        {
+                            MessageBox.Show("Ошибка при поиске ключевых точек", "Предупреждение",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("На текущем изображении лиц не обнаружено", "Предупреждение",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("не выбрано изображений", "Предупреждение",
+                           MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
     }
 }

@@ -46,7 +46,14 @@
     <Reference Include="Emgu.Util">
       <HintPath>C:\Emgu\emgucv-windows-universal-cuda 2.9.0.1922\bin\Emgu.Util.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -81,6 +88,7 @@
     <Compile Include="FaceDetection\FaceDetectionHaarCascade.cs" />
     <Compile Include="FeatureExtraction\Area.cs" />
     <Compile Include="FeatureExtraction\FeatureExtractionBase.cs" />
+    <Compile Include="FeatureExtraction\FormalizationFeatures.cs" />
     <Compile Include="FeatureExtraction\Point.cs" />
     <Compile Include="Help\YCbCrColor.cs" />
     <Compile Include="MainWindow.xaml.cs">
@@ -106,6 +114,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -117,6 +126,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="haarcascade_frontalface_default.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Entities\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

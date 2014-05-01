@@ -71,6 +71,7 @@ namespace FaceRecognition.FaceDetection
                     faceRect = new Rectangle((int)(faceRect.X + faceRect.Height / 7),
                         faceRect.Y, (int)(5 * faceRect.Height / 7), faceRect.Height);
                     Bitmap faceBitmap = image.Clone(faceRect, image.PixelFormat);
+                    faceBitmap.Save(String.Concat("DetectionFace/", FileName), ImageFormat.Jpeg);
                     return faceBitmap;
                 }
             }
