@@ -7,13 +7,8 @@ using System.Threading.Tasks;
 
 namespace FaceRecognition.Entities
 {
-    public class DatabaseContext : DbContext
+    public class FeaturesContext : DbContext 
     {
-        public DatabaseContext() : base(@"Data Source=(LocalDB)\v11.0;AttachDbFilename=|DataDirectory|\Database.mdf;Integrated Security=True")
-        {
-
-        }
-
         public DbSet<User> Users { get; set; }
         public DbSet<Feature> Features { get; set; }
     }

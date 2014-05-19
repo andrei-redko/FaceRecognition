@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +9,8 @@ namespace FaceRecognition.Entities
 {
     public class Feature
     {
-        public int FeatureId { get; set; }
+        [Key]
+        public int Id { get; set; }
         public int UserId { get; set; }
         public virtual User User { get; set; }
     }

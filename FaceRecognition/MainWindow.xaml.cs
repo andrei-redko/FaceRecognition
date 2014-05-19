@@ -21,6 +21,7 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using System.Runtime.InteropServices;
 using System.Windows.Threading;
+using FaceRecognition.Entities;
 using Label = System.Windows.Controls.Label;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using Orientation = System.Windows.Controls.Orientation;
@@ -39,6 +40,17 @@ namespace FaceRecognition
         public MainWindow()
         {
             InitializeComponent();
+            //using (var db = new FeaturesContext())
+            //{
+            //    var user = new User();
+            //    user.Name = "ergeg";
+            //    db.Users.Add(new User
+            //    {
+            //        Name="ergerg",
+                    
+            //    });
+            //    db.SaveChanges();
+            //}
         }
 
         private Capture capture;
