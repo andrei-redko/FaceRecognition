@@ -184,7 +184,9 @@ namespace FaceRecognition
                         try
                         {
                             FeatureExtractionBase faceFeature = new FeatureExtractionBase(faceDetect);
-                            List<FeatureExtraction.Point> aaaaa = faceFeature.SearchPoint();
+                            List<FeatureExtraction.Point> points = faceFeature.SearchPoint();
+                            FormalizationFeatures features = new FormalizationFeatures(points);
+                            features.AddFeature("jjjj");
                         }
                         catch (Exception)
                         {
