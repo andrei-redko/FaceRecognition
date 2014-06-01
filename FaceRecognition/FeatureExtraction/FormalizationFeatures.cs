@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FaceRecognition.Entities;
+using FaceRecognition.Model;
 
 namespace FaceRecognition.FeatureExtraction
 {
@@ -26,38 +26,37 @@ namespace FaceRecognition.FeatureExtraction
             lips = points[5];
         }
 
-        public void AddFeature(string userName)
+        public void AddFeature(int id)
         {
-            using (FeaturesContext db = new FeaturesContext())
+            decimal noseLips = nose.Y - lips.X;
+            decimal eyeLips = -(leftEye.Y + rightEye.Y) / 2 + lips.Y;
+            decimal eyeNose = -(leftEye.Y + rightEye.Y) / 2 + nose.Y;
+            decimal eyeBrowNose = -(leftEyebrow.Y + rightEyebrow.Y) / 2 + nose.Y;
+            decimal eyeBrowLips = -(leftEyebrow.Y + rightEyebrow.Y) / 2 + lips.Y;
+            decimal eyeBrowEye = -(leftEyebrow.Y + rightEyebrow.Y) / 2 + (leftEye.Y + rightEye.Y) / 2;
+            decimal eyeEyebrowLeft = -leftEyebrow.Y + leftEye.Y;
+            decimal eyeEyebrowRight = -rightEyebrow.Y + rightEye.Y;
+            decimal leftEyeLips = (decimal)Math.Sqrt(Math.Pow(lips.X - leftEye.X, 2) + Math.Pow(lips.Y - leftEye.Y, 2));
+            decimal rightEyeLips = (decimal)Math.Sqrt(Math.Pow(lips.X - rightEye.X, 2) + Math.Pow(lips.Y - rightEye.Y, 2));
+            decimal leftBrowEyeLips =
+                (decimal)Math.Sqrt(Math.Pow(nose.X - leftEyebrow.X, 2) + Math.Pow(nose.Y - leftEyebrow.Y, 2));
+            decimal rightBrowEyeLips =
+                (decimal)Math.Sqrt(Math.Pow(nose.X - rightEyebrow.X, 2) + Math.Pow(nose.Y - rightEyebrow.Y, 2));
+
+            using (FeatureEntities db = new FeatureEntities())
             {
-                User user = new User()
+                db.Features.Add(new Feature()
                 {
-                    Name = userName,
-                };
-                //db.Users.Add(user);
-                //db.SaveChanges();
-                double noseLips = nose.Y - lips.X;
-                double eyeLips = -(leftEye.Y + rightEye.Y)/2 + lips.Y;
-                double eyeNose = -(leftEye.Y + rightEye.Y)/2 + nose.Y;
-                double eyeBrowNose = -(leftEyebrow.Y + rightEyebrow.Y)/2 + nose.Y;
-                double eyeBrowLips = -(leftEyebrow.Y + rightEyebrow.Y)/2 + lips.Y;
-                double eyeBrowEye = -(leftEyebrow.Y + rightEyebrow.Y)/2 + (leftEye.Y + rightEye.Y)/2;
-                double eyeEyebrowLeft = -leftEyebrow.Y + leftEye.Y;
-                double eyeEyebrowRight = -rightEyebrow.Y + rightEye.Y;
-                double leftEyeLips = Math.Sqrt(Math.Pow(lips.X - leftEye.X, 2) + Math.Pow(lips.Y - leftEye.Y, 2));
-                double rightEyeLips = Math.Sqrt(Math.Pow(lips.X - rightEye.X, 2) + Math.Pow(lips.Y - rightEye.Y, 2));
-                double leftBrowEyeLips =
-                    Math.Sqrt(Math.Pow(nose.X - leftEyebrow.X, 2) + Math.Pow(nose.Y - leftEyebrow.Y, 2));
-                double rightBrowEyeLips =
-                    Math.Sqrt(Math.Pow(nose.X - rightEyebrow.X, 2) + Math.Pow(nose.Y - rightEyebrow.Y, 2));
+                    UserId = id,
+                    f1 = eyeNose/eyeBrowLips,
+                    f2 = eyeBrowEye/noseLips,
+                    f3 = eyeBrowNose/eyeLips,
+                    f4 = eyeEyebrowLeft/eyeEyebrowRight,
+                    f5 = leftEyeLips/rightEyeLips,
+                    f6 = leftBrowEyeLips/rightBrowEyeLips,
+                });
 
-
-                double f1 = eyeNose/eyeBrowLips;
-                double f2 = eyeBrowEye/noseLips;
-                double f3 = eyeBrowNose/eyeLips;
-                double f4 = eyeEyebrowLeft/eyeEyebrowRight;
-                double f5 = leftEyeLips/rightEyeLips;
-                double f6 = leftBrowEyeLips/rightBrowEyeLips;
+                db.SaveChanges();
             }
         }
     }

@@ -10,32 +10,30 @@
         </Grid.ColumnDefinitions>
 
         <GridSplitter Grid.Column="1" ShowsPreview="False" Width="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" />
-        <TabControl Grid.Column="2">
-            <TabItem Header="TabItem">
-                <Grid Background="#FFE5E5E5"/>
-            </TabItem>
-            <TabItem Header="Новый пользователь">
-                <Grid Background="#FFE5E5E5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.3*" />
-                        <ColumnDefinition Width="0.7*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="350" MinHeight="350" MaxHeight="350"/>
-                    </Grid.RowDefinitions>
-                    <Button Grid.Column="0" Grid.Row="0" Content="Сделать снимок" Margin="10,10,10,10" Name="buttonSnapshot" Click="buttonSnapshot_Click"/>
-                    <Button Grid.Column="0" Grid.Row="1" Content="Загрузить из файла" Margin="10,10,10,10" Name="uploadFromFile" Click="uploadFromFile_Click"/>
-                    <Button Grid.Column="1" Grid.Row="2" Content="Добавить пользователя" Margin="10,10,10,10" Name="faceDetection" Click="faceDetection_Click"/>
-                    <ScrollViewer Grid.ColumnSpan="2" Grid.Row="3" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                        <StackPanel Name="listImage" Orientation="Horizontal"/>
-                    </ScrollViewer>
-                </Grid>
-            </TabItem>
-        </TabControl>
-
+        <Grid Background="#FFE5E5E5" Grid.Column="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="350" MinHeight="350" MaxHeight="350"/>
+            </Grid.RowDefinitions>
+            <Button Grid.Column="0" Grid.Row="0" Content="Сделать снимок" Margin="10,10,10,10" Name="buttonSnapshot" Click="buttonSnapshot_Click"/>
+            <Button Grid.Column="1" Grid.Row="0" Content="Загрузить из файла" Margin="10,10,10,10" Name="uploadFromFile" Click="uploadFromFile_Click"/>
+            <Button Grid.Column="1" Grid.Row="1" Content="Добавить пользователя" Margin="10,10,10,10" Name="addUser" Click="addUser_Click"/>
+            <TextBox Grid.Column="0" Grid.Row="1" Margin="10,10,10,10" Name="nameUser" FontSize="20"/>
+            <Label Grid.Column="0" Grid.Row="2" Margin="10,10,10,10" Name="detectUserName" FontSize="20"/>
+            <Button Grid.Column="1" Grid.Row="2" Content="Распознать" Margin="10,10,10,10" Name="detectUser" Click="detectUser_Click"/>
+            <Label Grid.Column="0" Grid.Row="3" Margin="10,10,10,10" FontSize="20"/>
+            <Label Grid.Column="1" Grid.Row="3" Margin="10,10,10,10" FontSize="20"/>
+            <ScrollViewer Grid.ColumnSpan="2" Grid.Row="4" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                <StackPanel Name="listImage" Orientation="Horizontal"/>
+            </ScrollViewer>
+        </Grid>
         <Image Name="cameraImage" Grid.Column="0" HorizontalAlignment="Left" Margin="10,50,10,10"/>
         <Button Grid.Column="0" Content="Старт" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Name="buttonStart" Click="ButtonStart_Click"/>
 

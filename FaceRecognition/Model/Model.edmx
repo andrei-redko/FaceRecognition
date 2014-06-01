@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="FeaturesDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Features">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="f1" Type="decimal" Precision="38" Scale="20" />
+          <Property Name="f2" Type="decimal" Precision="38" Scale="20" />
+          <Property Name="f3" Type="decimal" Precision="38" Scale="20" />
+          <Property Name="f4" Type="decimal" Precision="38" Scale="20" />
+          <Property Name="f5" Type="decimal" Precision="38" Scale="20" />
+          <Property Name="f6" Type="decimal" Precision="38" Scale="20" />
+          <Property Name="f7" Type="decimal" Precision="38" Scale="20" />
+          <Property Name="f8" Type="decimal" Precision="38" Scale="20" />
+          <Property Name="f9" Type="decimal" Precision="38" Scale="20" />
+          <Property Name="f10" Type="decimal" Precision="38" Scale="20" />
+          <Property Name="f11" Type="decimal" Precision="38" Scale="20" />
+          <Property Name="f12" Type="decimal" Precision="38" Scale="20" />
+          <Property Name="f13" Type="decimal" Precision="38" Scale="20" />
+          <Property Name="f14" Type="decimal" Precision="38" Scale="20" />
+          <Property Name="f15" Type="decimal" Precision="38" Scale="20" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+        </EntityType>
+        <Association Name="FK_Features_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Features" Type="Self.Features" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Features">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FeaturesDatabaseModelStoreContainer">
+          <EntitySet Name="Features" EntityType="Self.Features" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Features_Users" Association="Self.FK_Features_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Features" EntitySet="Features" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FeaturesDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="FeatureEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Features" EntityType="FeaturesDatabaseModel.Feature" />
+          <EntitySet Name="Users" EntityType="FeaturesDatabaseModel.User" />
+          <AssociationSet Name="FK_Features_Users" Association="FeaturesDatabaseModel.FK_Features_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Feature" EntitySet="Features" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Feature">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="f1" Type="Decimal" Precision="38" Scale="20" />
+          <Property Name="f2" Type="Decimal" Precision="38" Scale="20" />
+          <Property Name="f3" Type="Decimal" Precision="38" Scale="20" />
+          <Property Name="f4" Type="Decimal" Precision="38" Scale="20" />
+          <Property Name="f5" Type="Decimal" Precision="38" Scale="20" />
+          <Property Name="f6" Type="Decimal" Precision="38" Scale="20" />
+          <Property Name="f7" Type="Decimal" Precision="38" Scale="20" />
+          <Property Name="f8" Type="Decimal" Precision="38" Scale="20" />
+          <Property Name="f9" Type="Decimal" Precision="38" Scale="20" />
+          <Property Name="f10" Type="Decimal" Precision="38" Scale="20" />
+          <Property Name="f11" Type="Decimal" Precision="38" Scale="20" />
+          <Property Name="f12" Type="Decimal" Precision="38" Scale="20" />
+          <Property Name="f13" Type="Decimal" Precision="38" Scale="20" />
+          <Property Name="f14" Type="Decimal" Precision="38" Scale="20" />
+          <Property Name="f15" Type="Decimal" Precision="38" Scale="20" />
+          <NavigationProperty Name="User" Relationship="FeaturesDatabaseModel.FK_Features_Users" FromRole="Feature" ToRole="User" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Features" Relationship="FeaturesDatabaseModel.FK_Features_Users" FromRole="User" ToRole="Feature" />
+        </EntityType>
+        <Association Name="FK_Features_Users">
+          <End Type="FeaturesDatabaseModel.User" Role="User" Multiplicity="1" />
+          <End Type="FeaturesDatabaseModel.Feature" Role="Feature" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Feature">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FeaturesDatabaseModelStoreContainer" CdmEntityContainer="FeatureEntities">
+          <EntitySetMapping Name="Features">
+            <EntityTypeMapping TypeName="FeaturesDatabaseModel.Feature">
+              <MappingFragment StoreEntitySet="Features">
+                <ScalarProperty Name="f15" ColumnName="f15" />
+                <ScalarProperty Name="f14" ColumnName="f14" />
+                <ScalarProperty Name="f13" ColumnName="f13" />
+                <ScalarProperty Name="f12" ColumnName="f12" />
+                <ScalarProperty Name="f11" ColumnName="f11" />
+                <ScalarProperty Name="f10" ColumnName="f10" />
+                <ScalarProperty Name="f9" ColumnName="f9" />
+                <ScalarProperty Name="f8" ColumnName="f8" />
+                <ScalarProperty Name="f7" ColumnName="f7" />
+                <ScalarProperty Name="f6" ColumnName="f6" />
+                <ScalarProperty Name="f5" ColumnName="f5" />
+                <ScalarProperty Name="f4" ColumnName="f4" />
+                <ScalarProperty Name="f3" ColumnName="f3" />
+                <ScalarProperty Name="f2" ColumnName="f2" />
+                <ScalarProperty Name="f1" ColumnName="f1" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="FeaturesDatabaseModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

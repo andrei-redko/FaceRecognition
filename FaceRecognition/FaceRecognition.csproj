@@ -100,9 +100,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ArrayExtensions.cs" />
-    <Compile Include="Entities\Feature.cs" />
-    <Compile Include="Entities\FeaturesContext.cs" />
-    <Compile Include="Entities\User.cs" />
     <Compile Include="FaceDetection\FaceDetectionBase.cs" />
     <Compile Include="FaceDetection\FaceDetectionColor.cs" />
     <Compile Include="FaceDetection\FaceDetectionHaarCascade.cs" />
@@ -117,11 +114,43 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\201405191948360_Add.cs" />
-    <Compile Include="Migrations\201405191948360_Add.Designer.cs">
-      <DependentUpon>201405191948360_Add.cs</DependentUpon>
+    <Compile Include="Model\Feature.cs">
+      <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Model\Model.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Model.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Model\User.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NeuralNetwork\BackpropagationFCNLearningAlgorithm.cs" />
+    <Compile Include="NeuralNetwork\DataItem.cs" />
+    <Compile Include="NeuralNetwork\HalfSquaredEuclidianDistance.cs" />
+    <Compile Include="NeuralNetwork\HyperbolicTangensFunction.cs" />
+    <Compile Include="NeuralNetwork\IFunction.cs" />
+    <Compile Include="NeuralNetwork\ILayer.cs" />
+    <Compile Include="NeuralNetwork\ILearningStrategy.cs" />
+    <Compile Include="NeuralNetwork\IMetrics.cs" />
+    <Compile Include="NeuralNetwork\IMultilayerNeuralNetwork.cs" />
+    <Compile Include="NeuralNetwork\INeuralNetwork.cs" />
+    <Compile Include="NeuralNetwork\INeuron.cs" />
+    <Compile Include="NeuralNetwork\LearningAlgorithmConfig.cs" />
+    <Compile Include="NeuralNetwork\Loglikelihood.cs" />
+    <Compile Include="NeuralNetwork\NeuralNetwork.cs" />
+    <Compile Include="NeuralNetwork\Neuron.cs" />
+    <Compile Include="NeuralNetwork\SigmoidFunction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -135,13 +164,27 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Migrations\201405191948360_Add.resx">
-      <DependentUpon>201405191948360_Add.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EntityDeploy Include="Model\Model.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Model\Model.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model.edmx</DependentUpon>
+      <LastGenOutput>Model.Context.cs</LastGenOutput>
+    </None>
+    <None Include="Model\Model.edmx.diagram">
+      <DependentUpon>Model.edmx</DependentUpon>
+    </None>
+    <None Include="Model\Model.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model.edmx</DependentUpon>
+      <LastGenOutput>Model.cs</LastGenOutput>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

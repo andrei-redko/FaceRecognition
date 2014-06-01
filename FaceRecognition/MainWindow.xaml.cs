@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,7 +22,7 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using System.Runtime.InteropServices;
 using System.Windows.Threading;
-using FaceRecognition.Entities;
+using FaceRecognition.Model;
 using Label = System.Windows.Controls.Label;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using Orientation = System.Windows.Controls.Orientation;
@@ -40,17 +41,6 @@ namespace FaceRecognition
         public MainWindow()
         {
             InitializeComponent();
-            //using (var db = new FeaturesContext())
-            //{
-            //    var user = new User();
-            //    user.Name = "ergeg";
-            //    db.Users.Add(new User
-            //    {
-            //        Name="ergerg",
-                    
-            //    });
-            //    db.SaveChanges();
-            //}
         }
 
         private Capture capture;
@@ -68,7 +58,7 @@ namespace FaceRecognition
 
         public static BitmapSource ToBitmapSource(IImage image)
         {
-            using (System.Drawing.Bitmap source = image.Bitmap)
+            using (Bitmap source = image.Bitmap)
             {
                 IntPtr ptr = source.GetHbitmap();
 
@@ -103,7 +93,7 @@ namespace FaceRecognition
                 }
                 catch (Exception ex)
                 {
-                    System.Windows.Forms.MessageBox.Show(ex.Message, "Error", 
+                    MessageBox.Show(ex.Message, "Error", 
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 buttonStart.Content = "Стоп";
@@ -170,8 +160,18 @@ namespace FaceRecognition
             listImage.Children.Remove((StackPanel)label.Parent);
         }
 
-        private void faceDetection_Click(object sender, RoutedEventArgs e)
+        private void addUser_Click(object sender, RoutedEventArgs e)
         {
+            int idUser = 0;
+            using (var db = new FeatureEntities())
+            {
+                User user = new User();
+                user.Name = String.Empty;
+                db.Users.Add(user);
+                db.SaveChanges();
+                idUser = user.Id;
+            }
+
             if (listImage.Children.Count != 0)
             {
                 foreach (var child in listImage.Children)
@@ -185,8 +185,9 @@ namespace FaceRecognition
                         {
                             FeatureExtractionBase faceFeature = new FeatureExtractionBase(faceDetect);
                             List<FeatureExtraction.Point> points = faceFeature.SearchPoint();
+
                             FormalizationFeatures features = new FormalizationFeatures(points);
-                            features.AddFeature("jjjj");
+                            features.AddFeature(idUser);
                         }
                         catch (Exception)
                         {
@@ -206,6 +207,10 @@ namespace FaceRecognition
                 MessageBox.Show("не выбрано изображений", "Предупреждение",
                            MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+        }
+
+        private void detectUser_Click(object sender, RoutedEventArgs e)
+        {
         }
     }
 }
